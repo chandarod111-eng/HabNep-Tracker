@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080909" />
+  <title>HabNep — Habit Tracker</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark"><span></span><span></span><span></span></div><div><div class="brand-title">Hab<span> Nep</span></div><div class="brand-subtitle">SMALL STEPS. BIG CHANGES.</div></div></div>
+      <blockquote>“ Discipline is the bridge between<br> your goals and your freedom. ”</blockquote>
+      <div class="toolbar">
+        <div class="month-nav" aria-label="Month navigation"><button class="icon-btn" id="prevMonth" title="Previous month">‹</button><button class="month-display" id="monthLabel">—</button><button class="icon-btn" id="nextMonth" title="Next month">›</button></div>
+        <input type="month" id="monthPicker" aria-label="Choose month" hidden>
+        <button class="btn icon-only" id="calendarBtn" title="Choose month and year">▦</button>
+        <button class="btn icon-only" id="settingsBtn" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <section class="top-grid">
+      <article class="panel overall-panel"><h2 class="panel-title">OVERALL PROGRESS</h2><div class="overall-content"><div class="ring-wrap"><div class="progress-ring" id="overallRing"><div class="ring-center"><strong id="overallPercent">0%</strong><small id="calendarCaption">Monthly Completion</small></div></div></div><div class="stat-stack"><div class="stat"><span class="stat-icon">♨</span><div><small>Current Streak</small><strong id="currentStreak">0 days</strong></div></div><div class="stat"><span class="stat-icon">🏆</span><div><small>Best Streak</small><strong id="bestStreak">0 days</strong></div></div><div class="stat"><span class="stat-icon">✓</span><div><small>Total Completed</small><strong id="totalCompleted">0 / 0</strong></div></div><div class="stat"><span class="stat-icon">◎</span><div><small>Goal</small><strong><span id="goalPercent">80</span>%</strong></div></div></div></div></article>
+      <article class="panel chart-panel"><h2 class="panel-title">MONTHLY PERFORMANCE</h2><div class="chart-holder"><canvas id="monthlyChart"></canvas></div></article>
+      <article class="panel performance-panel"><h2 class="panel-title">HABIT PERFORMANCE</h2><div id="performanceList" class="performance-list"></div></article>
+    </section>
+
+    <section class="panel habits-panel"><div class="section-heading"><div><h2 class="panel-title">HABITS</h2><span class="hint">Tap ✓ to complete · long press / right-click to mark Rest</span></div><div class="table-actions"><button class="btn btn-red" id="addHabitBtn">＋ Add Habit</button></div></div><div class="table-scroll"><table id="habitTable"><thead id="habitHead"></thead><tbody id="habitBody"></tbody><tfoot id="habitFoot"></tfoot></table></div></section>
+
+    <section class="bottom-grid"><article class="panel weekly-panel"><h2 class="panel-title">WEEKLY BREAKDOWN</h2><div class="chart-holder weekly-chart-holder"><canvas id="weeklyChart"></canvas></div></article><article class="panel insights-panel"><h2 class="panel-title">MONTHLY INSIGHTS</h2><div class="insights-content"><div class="insight-list" id="insightList"></div><div class="insight-ring-area"><div class="progress-ring small-ring" id="insightRing"><div class="ring-center"><strong id="insightPercent">0%</strong></div></div><small>Overall Completion</small><b id="monthChange">—</b><small>vs last month</small></div></div></article><article class="panel heatmap-panel"><h2 class="panel-title">YEARLY HEATMAP</h2><div class="heatmap-scroll"><div id="heatmap" class="heatmap"></div></div><div class="legend"><span><i class="heat high"></i> High</span><span><i class="heat medium"></i> Medium</span><span><i class="heat low"></i> Low</span><span><i class="heat none"></i> None</span></div></article></section>
+    <footer class="footer"><div class="footer-brand"><span>△</span> BETTER HABITS <b>/</b> A STRONGER YOU</div><div class="footer-note"><i></i> Progress, not perfection. <i></i></div></footer>
+  </main>
+
+  <dialog id="habitDialog"><form method="dialog" id="habitForm"><div class="dialog-head"><h2 id="dialogTitle">Add a habit</h2><button class="icon-btn" value="cancel" aria-label="Close">×</button></div><label>Habit name<input id="habitName" maxlength="32" required placeholder="e.g. Stretching"></label><div class="form-row"><label>Daily target<input id="habitTarget" placeholder="e.g. 20 min"></label><label>Icon<select id="habitIcon"><option>♧</option><option>⌘</option><option>◔</option><option>♨</option><option>▤</option><option>◉</option><option>◎</option><option>✦</option><option>◇</option></select></label></div><label>Category<select id="habitCategory"><option>Health</option><option>Learning</option><option>Productivity</option><option>Lifestyle</option><option>Personal Growth</option></select></label><div class="dialog-actions"><button type="button" class="btn" id="cancelHabit">Cancel</button><button type="submit" class="btn btn-red">Save Habit</button></div></form></dialog>
+
+  <dialog id="settingsDialog" class="settings-dialog"><form method="dialog"><div class="dialog-head"><h2>Settings</h2><button class="icon-btn" value="cancel">×</button></div><div class="settings-section"><h3>Calendar</h3><label>Calendar display<select id="calendarMode"><option value="ad">A.D.</option><option value="bs">B.S. (Nepali Date)</option></select></label></div><div class="settings-section"><h3>Data backup</h3><div class="data-actions"><button type="button" class="btn" id="exportBtn">⇩ Export backup</button><label class="btn">⇧ Import backup<input type="file" id="importInput" accept="application/json" hidden></label></div><small class="settings-note">Your habits and history are stored locally in this browser.</small></div><div class="settings-section about-setting"><button type="button" class="about-row" id="aboutBtn"><span><strong>ℹ About HabNep</strong><small>Learn more about the app</small></span><b>›</b></button></div><div class="dialog-actions"><button type="button" class="btn btn-danger" id="resetDataBtn">Reset all data</button><button value="cancel" class="btn btn-red">Done</button></div></form></dialog>
+
+<dialog id="aboutDialog" class="settings-dialog about-dialog"><div class="dialog-head"><h2>About HabNep</h2><button class="icon-btn" id="closeAboutBtn">×</button></div><div class="about-content"><h3>HabNep</h3><p>HabNep is a simple and modern habit tracking app designed to help you build consistency and track your daily progress.</p><h4>What you can do</h4><ul><li>Create and manage daily habits</li><li>Track completed habits</li><li>Take rest days without losing progress</li><li>View weekly, monthly and yearly analytics</li><li>Switch between A.D. and B.S. (Nepali Date)</li><li>Backup and restore your data</li></ul><div class="about-credit"><small>Developed by</small><strong>Chandar Od</strong><span>BCA Student | Nepal 🇳🇵</span></div><div class="about-version">Version 1.0</div><div class="dialog-actions"><button type="button" class="btn btn-red" id="aboutDoneBtn">Close</button></div></div></dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/service-worker.js"));}</script>
+</body></html>
